@@ -71,50 +71,48 @@ function createAd() {
   }
 }
 
-function getRandomNumber(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
+function getRandomNumber(minNumber, maxNumber) {
+  return Math.floor(Math.random() * (maxNumber - minNumber + 1)) + minNumber;
 }
 
-function getRandomItemFromArray(arr) {
-  return arr[getRandomNumber(0, arr.length - 1)];
+function getRandomItemFromArray(items) {
+  return items[getRandomNumber(0, items.length - 1)];
 }
 
-function getApartmentsPhotos(number) {
+function getApartmentsPhotos(itemIndex) {
   var photosArr = [];
-  var j = 0;
-  var minPhotoIndex = number * MAX_PHOTOS + 1;
+  var minPhotoIndex = itemIndex * MAX_PHOTOS + 1;
   var randomPhotoValue = getRandomNumber(1, MAX_PHOTOS);
 
   for (var i = minPhotoIndex; i <= minPhotoIndex + randomPhotoValue; i++) {
-    photosArr[j] = 'http://o0.github.io/assets/images/tokyo/hotel' + i;
-    j++;
+    photosArr.push('http://o0.github.io/assets/images/tokyo/hotel' + i);
   }
 
   return photosArr;
 }
 
-function getRandomList(arr) {
-  var listArr = [];
-  var allSortFeatures = randomSortArr(arr);
-  var featuresValue = getRandomNumber(1, arr.length);
+function getRandomList(items) {
+  var newList = [];
+  var allSortFeatures = randomSortArr(items);
+  var featuresValue = getRandomNumber(1, items.length);
 
   for (var i = 0; i < featuresValue; i++) {
-    listArr[i] = allSortFeatures[i];
+    newList[i] = allSortFeatures[i];
   }
 
-  return listArr;
+  return newList;
 }
 
-function randomSortArr(arr) {
+function randomSortArr(items) {
   var j;
   var receivedItem;
-  for (var i = 0; i < arr.length; i++) {
-    j = getRandomNumber(0, arr.length - 1);
-    receivedItem = arr[j];
-    arr[j] = arr[i];
-    arr[i] = receivedItem;
+  for (var i = 0; i < items.length; i++) {
+    j = getRandomNumber(0, items.length - 1);
+    receivedItem = items[j];
+    items[j] = items[i];
+    items[i] = receivedItem;
   }
-  return arr;
+  return items;
 }
 
 createAd();
@@ -122,7 +120,7 @@ createAd();
 function renderMapPin(userAd) {
   var mapPinElement = mapPinTemplate.cloneNode(true);
   var mapPinStyle = 'left: ' + (userAd['location']['x'] - PIN_WIDTH / 2) + 'px; ' +
-  'top: ' + (userAd['location']['y'] - PIN_HEIGHT) + 'px;';
+    'top: ' + (userAd['location']['y'] - PIN_HEIGHT) + 'px;';
 
   mapPinElement.setAttribute('style', mapPinStyle);
   mapPinElement.querySelector('img').setAttribute('alt', userAd['offer']['tittle']);
