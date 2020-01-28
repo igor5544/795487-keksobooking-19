@@ -79,40 +79,30 @@ function getRandomItemFromArray(items) {
   return items[getRandomNumber(0, items.length - 1)];
 }
 
-function getApartmentsPhotos(itemIndex) {
+function getApartmentsPhotos(adNumber) {
   var photosArr = [];
-  var minPhotoIndex = itemIndex * MAX_PHOTOS + 1;
   var randomPhotoValue = getRandomNumber(1, MAX_PHOTOS);
+  var minPhotoIndex = adNumber * MAX_PHOTOS + 1;
+  var maxPhotoIndex = minPhotoIndex + randomPhotoValue;
 
-  for (var i = minPhotoIndex; i <= minPhotoIndex + randomPhotoValue; i++) {
-    photosArr.push('http://o0.github.io/assets/images/tokyo/hotel' + i);
+  for (var i = minPhotoIndex; i <= maxPhotoIndex; i++) {
+    photosArr.push('http://o0.github.io/assets/images/tokyo/hotel' + i + '.jpg');
   }
 
   return photosArr;
 }
 
 function getRandomList(items) {
-  var newList = [];
-  var allSortFeatures = randomSortArr(items);
-  var featuresValue = getRandomNumber(1, items.length);
+  var newList = items.slice(0);
+  var excessValue = getRandomNumber(0, items.length - 1);
 
-  for (var i = 0; i < featuresValue; i++) {
-    newList[i] = allSortFeatures[i];
+  for (var i = 0; i < excessValue; i++) {
+    var randomItem = getRandomNumber(0, newList.length - 1);
+
+    newList.splice(randomItem, 1);
   }
 
   return newList;
-}
-
-function randomSortArr(items) {
-  var j;
-  var receivedItem;
-  for (var i = 0; i < items.length; i++) {
-    j = getRandomNumber(0, items.length - 1);
-    receivedItem = items[j];
-    items[j] = items[i];
-    items[i] = receivedItem;
-  }
-  return items;
 }
 
 createAd();
@@ -129,7 +119,7 @@ function renderMapPin(userAd) {
   return mapPinElement;
 }
 
-function builMapPins() {
+function buildMapPins() {
   var fragment = document.createDocumentFragment();
 
   for (var i = 0; i < usersAds.length; i++) {
@@ -139,6 +129,6 @@ function builMapPins() {
   mapPins.appendChild(fragment);
 }
 
-builMapPins();
+buildMapPins();
 
 map.classList.remove('map--faded');
