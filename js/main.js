@@ -281,7 +281,7 @@ function createButtonsCards() {
     }
 
     mapButton.addEventListener('click', function () {
-      var actualCardInDomElement = document.querySelector('#card-' + (i));
+      var actualCardInDomElement = document.querySelector('#card-' + i);
       activeCardElement = mapElement.querySelector('.active-card');
 
       if (activeCardElement !== null) {
