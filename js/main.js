@@ -4,7 +4,7 @@ var mapElement = document.querySelector('.map');
 var mapPinsContainerElement = document.querySelector('.map__pins');
 var mapButtonsPinsElements = mapPinsContainerElement.querySelectorAll('.map__pin');
 var mainMapPinElement = document.querySelector('.map__pin--main');
-var mapFilters = mapElement.querySelector('.map__filters-container');
+var mapFiltersElement = mapElement.querySelector('.map__filters-container');
 
 var MAIN_PIN_WIDTH = 65;
 var MAIN_PIN_HEIGHT = 65;
@@ -266,13 +266,10 @@ adFormElement.addEventListener('reset', function () {
   }, 50);
 });
 
-// Отрисовка информационных карточек
-
 var adInfoCardTemplateElement = document.querySelector('#card')
   .content
   .querySelector('.map__card');
 var USER_MAP_PIN = 1;
-var activeCardElement;
 
 function createButtonsCards() {
   mapButtonsPinsElements.forEach(function (mapButton, i) {
@@ -282,7 +279,7 @@ function createButtonsCards() {
 
     mapButton.addEventListener('click', function () {
       var actualCardInDomElement = document.querySelector('#card-' + i);
-      activeCardElement = mapElement.querySelector('.active-card');
+      var activeCardElement = mapElement.querySelector('.active-card');
 
       if (activeCardElement !== null) {
         return;
@@ -312,7 +309,7 @@ function openCard(actualCard) {
 }
 
 function closeCard() {
-  activeCardElement = mapElement.querySelector('.active-card');
+  var activeCardElement = mapElement.querySelector('.active-card');
   activeCardElement.classList.add('visually-hidden');
   activeCardElement.classList.remove('active-card');
 
@@ -325,7 +322,7 @@ function buildAdInfoCard(cardIndex) {
 
   fragment.appendChild(renderAdInfoCard(cardIndex));
 
-  mapElement.insertBefore(fragment, mapFilters);
+  mapElement.insertBefore(fragment, mapFiltersElement);
 }
 
 function renderAdInfoCard(cardIndex) {
@@ -363,7 +360,7 @@ function renderAdInfoCard(cardIndex) {
     closeCard();
   });
 
-  adGuests = (adRooms !== '' && adGuests === 0) ? ' не для' : ' для ' + adGuests;
+  adGuests = (adGuests === 0) ? ' не для' : ' для ' + adGuests;
 
   if (adRooms !== '' && adGuests !== '') {
     adRoomsAndGuests = adRooms + ' комнат(a/ы)' + adGuests + ' гост(я/ей)';
@@ -413,33 +410,28 @@ function renderTextFieldsForCard(textField, textValue, elementContainer) {
 }
 
 function hiddenExcessFeatures(featuresInTemplate, needFeatures) {
+  var featuresInTemplateArr = Array.prototype.slice.call(featuresInTemplate);
   var excessFeatures = getExcessFeatures(apartmentsFeatures, needFeatures);
+
   for (var i = 0; i < excessFeatures.length; i++) {
     var excessItemClass = 'popup__feature--' + excessFeatures[i];
-    findExcessFeature(featuresInTemplate, excessItemClass).classList.add('visually-hidden');
-  }
-}
 
-function findExcessFeature(featuresInTemplate, finditemClass) {
-  for (var i = 0; i < featuresInTemplate.length; i++) {
-    if (featuresInTemplate[i].classList.contains(finditemClass) === true) {
-      var neededElement = featuresInTemplate[i];
-      break;
-    }
+    featuresInTemplateArr.find(findExcessFeature).classList.add('visually-hidden');
   }
-  return neededElement;
+
+  function findExcessFeature(featureItem) {
+    return featureItem.classList.contains(excessItemClass);
+  }
 }
 
 function getExcessFeatures(allFeatures, needFeatures) {
   var excessFeatureslist = allFeatures.slice(0);
 
-  for (var i = 0; i < needFeatures.length; i++) {
-    var excessItemIndex = excessFeatureslist.indexOf(needFeatures[i]);
+  return excessFeatureslist.filter(cleanExcessFeatures);
 
-    excessFeatureslist.splice(excessItemIndex, 1);
+  function cleanExcessFeatures(needItem) {
+    return needFeatures.indexOf(needItem) === -1;
   }
-
-  return excessFeatureslist;
 }
 
 function buildAdPhotos(photosList, imgTeplate, photosContainer) {
@@ -453,12 +445,10 @@ function buildAdPhotos(photosList, imgTeplate, photosContainer) {
 function buildAdPhotosList(photosList, imgTeplate, photosContainer) {
   var fragment = document.createDocumentFragment();
 
+  imgTeplate.setAttribute('src', photosList.shift());
+
   for (var i = 0; i < photosList.length; i++) {
-    if (i === 0) {
-      imgTeplate.setAttribute('src', photosList[i]);
-    } else {
-      fragment.appendChild(renderNewPhotoForCard(photosList[i], imgTeplate));
-    }
+    fragment.appendChild(renderNewPhotoForCard(photosList[i], imgTeplate));
   }
 
   photosContainer.appendChild(fragment);
