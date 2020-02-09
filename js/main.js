@@ -269,16 +269,14 @@ adFormElement.addEventListener('reset', function () {
 var adInfoCardTemplateElement = document.querySelector('#card')
   .content
   .querySelector('.map__card');
-var USER_MAP_PIN = 1;
 
 function createButtonsCards() {
-  mapButtonsPinsElements.forEach(function (mapButton, i) {
-    if (i === 0) {
-      return;
-    }
+  var buttonswWithCards = Array.prototype.slice.call(mapButtonsPinsElements);
+  buttonswWithCards.shift();
 
+  buttonswWithCards.forEach(function (mapButton, i) {
     mapButton.addEventListener('click', function () {
-      var actualCardInDomElement = document.querySelector('#card-' + i);
+      var actualCardInDomElement = document.querySelector('#card-' + (i + 1));
       var activeCardElement = mapElement.querySelector('.active-card');
 
       if (activeCardElement !== null) {
@@ -286,7 +284,7 @@ function createButtonsCards() {
       }
 
       if (actualCardInDomElement === null) {
-        buildAdInfoCard(i - USER_MAP_PIN);
+        buildAdInfoCard(i);
       } else {
         openCard(actualCardInDomElement);
       }
@@ -348,17 +346,8 @@ function renderAdInfoCard(cardIndex) {
   var adRoomsAndGuests;
   var adTimes;
 
-  // Уникальный id
-  var actualCardId = 'card-' + (cardIndex + 1);
-  adInfoCardElement.id = actualCardId;
-
-  // Первое открытие
-  adInfoCardElement.classList.add('active-card');
-  document.addEventListener('keydown', onActiveCardEscPress);
-
-  cardCloseButtonElement.addEventListener('click', function () {
-    closeCard();
-  });
+  addUniqueId(adInfoCardElement, cardIndex);
+  firstOpenCard(adInfoCardElement, cardCloseButtonElement);
 
   adGuests = (adGuests === 0) ? ' не для' : ' для ' + adGuests;
 
@@ -401,6 +390,20 @@ function renderAdInfoCard(cardIndex) {
   return adInfoCardElement;
 }
 
+function addUniqueId(infoCard, cardIndex) {
+  var actualCardId = 'card-' + (cardIndex + 1);
+  infoCard.id = actualCardId;
+}
+
+function firstOpenCard(infoCard, closeButton) {
+  infoCard.classList.add('active-card');
+  document.addEventListener('keydown', onActiveCardEscPress);
+
+  closeButton.addEventListener('click', function () {
+    closeCard();
+  });
+}
+
 function renderTextFieldsForCard(textField, textValue, elementContainer) {
   elementContainer.querySelector(textField).textContent = textValue;
 
@@ -424,6 +427,7 @@ function hiddenExcessFeatures(featuresInTemplate, needFeatures) {
   }
 }
 
+
 function getExcessFeatures(allFeatures, needFeatures) {
   var excessFeatureslist = allFeatures.slice(0);
 
@@ -435,7 +439,7 @@ function getExcessFeatures(allFeatures, needFeatures) {
 }
 
 function buildAdPhotos(photosList, imgTeplate, photosContainer) {
-  if (photosList === 1) {
+  if (photosList.length === 1) {
     imgTeplate.setAttribute('src', photosList[0]);
   } else {
     buildAdPhotosList(photosList, imgTeplate, photosContainer);
