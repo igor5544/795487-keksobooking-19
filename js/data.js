@@ -3,7 +3,6 @@
 (function () {
 
   var mapPinsContainerElement = document.querySelector('.map__pins');
-  var mapButtonsPinsElements = mapPinsContainerElement.querySelectorAll('.map__pin');
 
   var apartmentsTyps = ['Palace', 'Flat', 'House', 'Bungalo'];
   var timesCheckin = ['12:00', '13:00', '14:00'];
@@ -101,7 +100,7 @@
 
   function renderMapPin(userAd) {
     var mapPinElement = mapPinTemplateElement.cloneNode(true);
-    var mapPinStyle = 'left: ' + (userAd['location']['x'] - PIN_WIDTH / 2) + 'px; ' +
+    var mapPinStyle = 'left: ' + userAd['location']['x'] + 'px; ' +
       'top: ' + (userAd['location']['y'] - PIN_HEIGHT) + 'px;';
 
     mapPinElement.setAttribute('style', mapPinStyle);
@@ -122,15 +121,8 @@
   }
 
   function activeMapPins() {
-    if (usersAds.length !== ADS_NUMBER) {
-      createAd();
-    }
-
-    var pinsOtherUsers = mapButtonsPinsElements.length - 1;
-
-    if (pinsOtherUsers !== usersAds.length) {
-      buildMapPins();
-    }
+    createAd();
+    buildMapPins();
   }
 
   window.data = {
