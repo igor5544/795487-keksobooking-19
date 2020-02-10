@@ -17,7 +17,7 @@
   var MAIN_PIN = {
     WIDTH: 65,
     HEIGHT: 65,
-    TAIL_HEIGHT: 22
+    TAIL_HEIGHT: 15
   };
 
   disabledAdForm();
@@ -45,7 +45,7 @@
     var pinTeil = window.map.pageIsActive ? MAIN_PIN.TAIL_HEIGHT : PIN_TAIL_NONE;
 
     var mainPinXLocation = Math.floor(mainPinLeftСoord - MAIN_PIN.WIDTH / 2);
-    var mainPinYLocation = Math.floor(mainPinTopСoord - (MAIN_PIN.HEIGHT + pinTeil) / rateYОffset);
+    var mainPinYLocation = Math.floor(mainPinTopСoord + (MAIN_PIN.HEIGHT + pinTeil) / rateYОffset);
 
     formAddressElement.value = mainPinXLocation + ', ' + mainPinYLocation;
   }

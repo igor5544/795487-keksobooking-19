@@ -8,13 +8,15 @@
 
   var pageIsActive = false;
 
-  mainMapPinElement.addEventListener('mousedown', function (evt) {
-    window.util.isLeftMouseEvent(evt, activePage);
-  });
+  mainMapPinElement.addEventListener('keydown', onMainPinKeydown);
 
-  mainMapPinElement.addEventListener('keydown', function (evt) {
+  function onMainPinMousedown(evt) {
+    window.util.isLeftMouseEvent(evt, activePage);
+  }
+
+  function onMainPinKeydown(evt) {
     window.util.isEnterEvent(evt, activePage);
-  });
+  }
 
   function activePage() {
     window.map.pageIsActive = true;
@@ -23,6 +25,8 @@
     window.form.enterAddress();
     window.data.activeMapPins();
     window.card.createButtonsCards();
+
+    mainMapPinElement.removeEventListener('keydown', onMainPinKeydown);
   }
 
   function removeFades() {
@@ -31,7 +35,8 @@
   }
 
   window.map = {
-    pageIsActive: pageIsActive
+    pageIsActive: pageIsActive,
+    onMainPinMousedown: onMainPinMousedown
   };
 
 })();
