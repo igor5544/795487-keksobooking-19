@@ -73,7 +73,7 @@
 
     adGuests = (adGuests === 0) ? ' не для' : ' для ' + adGuests;
 
-    if (adRooms !== '' && adGuests !== '') {
+    if (adRooms !== '' && adRooms !== 0 && adGuests !== '') {
       adRoomsAndGuests = adRooms + ' комнат(a/ы)' + adGuests + ' гост(я/ей)';
     }
 
@@ -81,7 +81,7 @@
       adTimes = 'Заезд после ' + adTimeCheckin + ' выезд до ' + adTimeCheckout;
     }
 
-    var cardTextsValues = [window.data.usersAds[cardIndex]['offer']['tittle'], window.data.usersAds[cardIndex]['offer']['address'], window.data.usersAds[cardIndex]['offer']['price'] + '₽/ночь', window.data.usersAds[cardIndex]['offer']['type'], adRoomsAndGuests, adTimes, window.data.usersAds[cardIndex]['offer']['description']];
+    var cardTextsValues = [window.data.usersAds[cardIndex]['offer']['title'], window.data.usersAds[cardIndex]['offer']['address'], window.data.usersAds[cardIndex]['offer']['price'] + '₽/ночь', window.data.usersAds[cardIndex]['offer']['type'], adRoomsAndGuests, adTimes, window.data.usersAds[cardIndex]['offer']['description']];
 
     for (var i = 0; i < cardTextsFields.length; i++) {
       renderTextCard(cardTextsFields[i], cardTextsValues[i], adInfoCardElement);

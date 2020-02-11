@@ -7,6 +7,7 @@
   var adFormElement = document.querySelector('.ad-form');
 
   var pageIsActive = false;
+  var TIMEOUT_LOAD_IN_MS = 1000;
 
   mainMapPinElement.addEventListener('keydown', onMainPinKeydown);
 
@@ -24,8 +25,9 @@
     window.form.unDisabledAdForm();
     window.form.enterAddress();
     window.data.activeMapPins();
-    window.card.createButtonsCards();
-
+    setTimeout(function () {
+      window.card.createButtonsCards();
+    }, TIMEOUT_LOAD_IN_MS);
     mainMapPinElement.removeEventListener('keydown', onMainPinKeydown);
   }
 
