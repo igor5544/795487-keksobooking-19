@@ -10,8 +10,9 @@
     TAIL_HEIGHT: 15
   };
   var MAP_WIDTH = 1200;
-  var MAX_PIN_X = MAP_WIDTH - MAIN_PIN.WIDTH;
-  var MIN_PIN_X = 0;
+  var MAX_PIN_X = MAP_WIDTH - (MAIN_PIN.WIDTH / 2);
+  var MIN_X = 0;
+  var MIN_PIN_X = MIN_X - (MAIN_PIN.WIDTH / 2);
   var MAX_Y = 630;
   var MAX_PIN_Y = MAX_Y - MAIN_PIN.HEIGHT - MAIN_PIN.TAIL_HEIGHT;
   var MIN_Y = 130;
