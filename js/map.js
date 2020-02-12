@@ -5,7 +5,6 @@
   var mapElement = document.querySelector('.map');
   var mainMapPinElement = document.querySelector('.map__pin--main');
   var adFormElement = document.querySelector('.ad-form');
-  var adFormResetElement = adFormElement.querySelector('.ad-form__reset');
 
   var pageIsActive = false;
   var TIMEOUT_LOAD_IN_MS = 1000;
@@ -40,7 +39,6 @@
   function deactivationPage() {
     window.map.pageIsActive = false;
     window.pin.mainButtonStartCoord();
-    adFormResetElement.click();
     window.form.disabledAdForm();
     toggleFades();
     window.data.removeMapPins();

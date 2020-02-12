@@ -5,6 +5,7 @@
   var mainElement = document.querySelector('main');
   var mainMapPinElement = document.querySelector('.map__pin--main');
   var adFormElement = document.querySelector('.ad-form');
+  var adFormResetElement = adFormElement.querySelector('.ad-form__reset');
   var adFormFieldsetsElements = adFormElement.querySelectorAll('fieldset');
   var formAddressElement = adFormElement.querySelector('[name="address"]');
   var formPriceElement = adFormElement.querySelector('[name="price"]');
@@ -108,6 +109,7 @@
   }
 
   adFormElement.addEventListener('reset', function () {
+    window.map.deactivationPage();
     setTimeout(function () {
       enterAddress();
     }, 50);
@@ -119,7 +121,7 @@
   });
 
   function successSend() {
-    window.map.deactivationPage();
+    adFormResetElement.click();
     openSuccessMesage();
   }
 
