@@ -33,7 +33,7 @@
     mapPinsContainerElement.appendChild(fragment);
   }
 
-  function errorLoad(errorMesage) {
+  function errorLoad(errorMessage) {
     var nodeElemetn = document.createElement('div');
     nodeElemetn.classList.add('error-load-message');
     nodeElemetn.style = 'z-index: 100; margin: 0 auto; color: #fff; text-align: center; background-color: firebrick;';
@@ -42,7 +42,7 @@
     nodeElemetn.style.right = 0;
     nodeElemetn.style.fontSize = '30px';
 
-    nodeElemetn.textContent = errorMesage;
+    nodeElemetn.textContent = errorMessage;
     document.body.insertAdjacentElement('beforebegin', nodeElemetn);
   }
 

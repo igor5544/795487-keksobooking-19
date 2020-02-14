@@ -122,10 +122,10 @@
 
   function successSend() {
     adFormResetElement.click();
-    openSuccessMesage();
+    openSuccessMessage();
   }
 
-  function openSuccessMesage() {
+  function openSuccessMessage() {
     var successPopupElement = mainElement.querySelector('.success');
 
     if (successPopupElement === null) {
@@ -134,7 +134,7 @@
       successPopupElement.classList.remove('visually-hidden');
     }
 
-    addMesagePopupLissteners(onSuccessPopupEscdown, onSuccessPopupMousedown);
+    addMessagePopupLissteners(onSuccessPopupEscdown, onSuccessPopupMousedown);
   }
 
   function createSuccessPopup() {
@@ -145,7 +145,7 @@
     mainElement.appendChild(fragment);
   }
 
-  function addMesagePopupLissteners(onEscdown, onMousedown) {
+  function addMessagePopupLissteners(onEscdown, onMousedown) {
     document.addEventListener('keydown', onEscdown);
     document.addEventListener('mousedown', onMousedown);
   }
@@ -166,35 +166,35 @@
     document.removeEventListener('mousedown', onSuccessPopupMousedown);
   }
 
-  function errorSend(errorMesage) {
+  function errorSend(errorMessage) {
     var errorPopupElement = mainElement.querySelector('.error');
 
     if (errorPopupElement === null) {
-      createErrorPopup(errorMesage);
+      createErrorPopup(errorMessage);
     } else {
-      errorPopupElement.querySelector('.error__message').textContent = errorMesage;
+      errorPopupElement.querySelector('.error__message').textContent = errorMessage;
       errorPopupElement.classList.remove('visually-hidden');
     }
 
     var closeButtonElement = mainElement.querySelector('.error__button');
 
-    addMesagePopupLissteners(onErrorPopupEscdown, onErrorPopupMousedown);
+    addMessagePopupLissteners(onErrorPopupEscdown, onErrorPopupMousedown);
     closeButtonElement.focus();
   }
 
-  function createErrorPopup(errorMesage) {
+  function createErrorPopup(errorMessage) {
     var fragment = document.createDocumentFragment();
 
-    fragment.appendChild(renderErrorPopup(errorMesage));
+    fragment.appendChild(renderErrorPopup(errorMessage));
 
     mainElement.appendChild(fragment);
   }
 
-  function renderErrorPopup(errorMesage) {
+  function renderErrorPopup(errorMessage) {
     var errorMasageElement = errorMasageTemplateElement.cloneNode(true);
     var closeButtonElement = errorMasageElement.querySelector('.error__button');
 
-    errorMasageElement.querySelector('.error__message').textContent = errorMesage;
+    errorMasageElement.querySelector('.error__message').textContent = errorMessage;
 
     closeButtonElement.addEventListener('click', function () {
       closeErrorPopup();
