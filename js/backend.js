@@ -5,7 +5,7 @@
   var DATA_PATH = '/data';
   var URL_SEND = DOMAIN;
   var URL_DATA = DOMAIN + DATA_PATH;
-  var TIMEOUT_IN_MS = 1;
+  var TIMEOUT_IN_MS = 5000;
   var StatusCode = {
     OK: 200
   };
