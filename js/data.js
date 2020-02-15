@@ -50,8 +50,19 @@
     window.backend.load(successLoad, errorLoad);
   }
 
+  function removeMapPins() {
+    var mapButtonsPinsElements = document.querySelectorAll('.map__pin');
+    var mapButtonsPins = Array.prototype.slice.call(mapButtonsPinsElements);
+    mapButtonsPins.shift();
+
+    mapButtonsPins.forEach(function (mapButton) {
+      mapButton.remove();
+    });
+  }
+
   window.data = {
     activeMapPins: activeMapPins,
+    removeMapPins: removeMapPins,
     usersAds: usersAds
   };
 

@@ -2,8 +2,10 @@
 
 (function () {
 
+  var mainElement = document.querySelector('main');
   var mainMapPinElement = document.querySelector('.map__pin--main');
   var adFormElement = document.querySelector('.ad-form');
+  var adFormResetElement = adFormElement.querySelector('.ad-form__reset');
   var adFormFieldsetsElements = adFormElement.querySelectorAll('fieldset');
   var formAddressElement = adFormElement.querySelector('[name="address"]');
   var formPriceElement = adFormElement.querySelector('[name="price"]');
@@ -12,6 +14,13 @@
   var formTimeoutElement = adFormElement.querySelector('[name="timeout"]');
   var formTRoomsElement = adFormElement.querySelector('[name="rooms"]');
   var formGuestsElement = adFormElement.querySelector('[name="capacity"]');
+
+  var successMasageTemplateElement = document.querySelector('#success')
+    .content
+    .querySelector('.success');
+  var errorMasageTemplateElement = document.querySelector('#error')
+    .content
+    .querySelector('.error');
 
   var DECIMAL_NUMBER_SYSTEM = 10;
   var MAIN_PIN = {
@@ -100,13 +109,119 @@
   }
 
   adFormElement.addEventListener('reset', function () {
+    window.map.deactivationPage();
     setTimeout(function () {
       enterAddress();
     }, 50);
   });
 
+  adFormElement.addEventListener('submit', function (evt) {
+    window.backend.sendForm(new FormData(adFormElement), successSend, errorSend);
+    evt.preventDefault();
+  });
+
+  function successSend() {
+    adFormResetElement.click();
+    openSuccessMessage();
+  }
+
+  function openSuccessMessage() {
+    var successPopupElement = mainElement.querySelector('.success');
+
+    if (successPopupElement === null) {
+      createSuccessPopup();
+    } else {
+      successPopupElement.classList.remove('visually-hidden');
+    }
+
+    addMessagePopupLissteners(onSuccessPopupEscdown, onSuccessPopupMousedown);
+  }
+
+  function createSuccessPopup() {
+    var fragment = document.createDocumentFragment();
+    var successMasageElement = successMasageTemplateElement.cloneNode(true);
+
+    fragment.appendChild(successMasageElement);
+    mainElement.appendChild(fragment);
+  }
+
+  function addMessagePopupLissteners(onEscdown, onMousedown) {
+    document.addEventListener('keydown', onEscdown);
+    document.addEventListener('mousedown', onMousedown);
+  }
+
+  function onSuccessPopupEscdown(evt) {
+    window.util.isEscEvent(evt, closeSuccessPopup);
+  }
+
+  function onSuccessPopupMousedown(evt) {
+    window.util.isLeftMouseEvent(evt, closeSuccessPopup);
+  }
+
+  function closeSuccessPopup() {
+    var successPopupElement = mainElement.querySelector('.success');
+    successPopupElement.classList.add('visually-hidden');
+
+    document.removeEventListener('keydown', onSuccessPopupEscdown);
+    document.removeEventListener('mousedown', onSuccessPopupMousedown);
+  }
+
+  function errorSend(errorMessage) {
+    var errorPopupElement = mainElement.querySelector('.error');
+
+    if (errorPopupElement === null) {
+      createErrorPopup(errorMessage);
+    } else {
+      errorPopupElement.querySelector('.error__message').textContent = errorMessage;
+      errorPopupElement.classList.remove('visually-hidden');
+    }
+
+    var closeButtonElement = mainElement.querySelector('.error__button');
+
+    addMessagePopupLissteners(onErrorPopupEscdown, onErrorPopupMousedown);
+    closeButtonElement.focus();
+  }
+
+  function createErrorPopup(errorMessage) {
+    var fragment = document.createDocumentFragment();
+
+    fragment.appendChild(renderErrorPopup(errorMessage));
+
+    mainElement.appendChild(fragment);
+  }
+
+  function renderErrorPopup(errorMessage) {
+    var errorMasageElement = errorMasageTemplateElement.cloneNode(true);
+    var closeButtonElement = errorMasageElement.querySelector('.error__button');
+
+    errorMasageElement.querySelector('.error__message').textContent = errorMessage;
+
+    closeButtonElement.addEventListener('click', function () {
+      closeErrorPopup();
+    });
+
+    return errorMasageElement;
+  }
+
+  function onErrorPopupEscdown(evt) {
+    window.util.isEscEvent(evt, closeErrorPopup);
+  }
+
+  function onErrorPopupMousedown(evt) {
+    window.util.isLeftMouseEvent(evt, closeErrorPopup);
+  }
+
+  function closeErrorPopup() {
+    var errorPopupElement = mainElement.querySelector('.error');
+    errorPopupElement.classList.add('visually-hidden');
+
+    document.removeEventListener('keydown', onErrorPopupEscdown);
+    document.removeEventListener('mousedown', onErrorPopupMousedown);
+  }
+
   window.form = {
     unDisabledAdForm: unDisabledAdForm,
+    disabledAdForm: disabledAdForm,
     enterAddress: enterAddress
   };
 
