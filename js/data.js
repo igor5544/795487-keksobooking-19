@@ -7,8 +7,13 @@
     .content
     .querySelector('.map__pin');
   var PIN_HEIGHT = 70;
-  var usersAds = [];
+  var MAX_ADS = 5;
+  var usersAdsAll = [];
+  var actualAdsList = [];
 
+  function getRandomNumber(minNumber, maxNumber) {
+    return Math.floor(Math.random() * (maxNumber - minNumber + 1)) + minNumber;
+  }
 
   function renderMapPin(userAd) {
     var mapPinElement = mapPinTemplateElement.cloneNode(true);
@@ -22,15 +27,25 @@
     return mapPinElement;
   }
 
-  function successLoad(usersData) {
+  function renderMapPinsList(usersData) {
     var fragment = document.createDocumentFragment();
-    window.data.usersAds = usersData;
+    var firstAds = usersData.length > MAX_ADS ? getRandomNumber(0, usersData.length - MAX_ADS) : 0;
+    var lastAds = usersData.length > MAX_ADS ? firstAds + MAX_ADS : usersData.length;
 
-    for (var i = 0; i < usersData.length; i++) {
-      fragment.appendChild(renderMapPin(usersData[i]));
+    window.data.actualAdsList = usersData.slice(firstAds, lastAds);
+    window.data.removeMapPins();
+
+    for (var i = 0; i < window.data.actualAdsList.length; i++) {
+      fragment.appendChild(renderMapPin(window.data.actualAdsList[i]));
     }
 
     mapPinsContainerElement.appendChild(fragment);
+  }
+
+  function successLoad(usersData) {
+    window.data.usersAdsAll = usersData;
+
+    renderMapPinsList(usersData);
   }
 
   function errorLoad(errorMessage) {
@@ -63,7 +78,9 @@
   window.data = {
     activeMapPins: activeMapPins,
     removeMapPins: removeMapPins,
-    usersAds: usersAds
+    actualAdsList: actualAdsList,
+    renderMapPinsList: renderMapPinsList,
+    usersAdsAll: usersAdsAll
   };
 
 })();
