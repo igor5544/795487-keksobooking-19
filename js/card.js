@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+
   var mapElement = document.querySelector('.map');
   var mapFiltersElement = mapElement.querySelector('.map__filters-container');
   var apartmentsFeatures = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
@@ -62,10 +63,10 @@
   function renderAdInfoCard(cardIndex) {
     var adInfoCardElement = adInfoCardTemplateElement.cloneNode(true);
     var cardCloseButtonElement = adInfoCardElement.querySelector('.popup__close');
-    var adRooms = window.data.usersAds[cardIndex]['offer']['rooms'];
-    var adGuests = window.data.usersAds[cardIndex]['offer']['guests'];
-    var adTimeCheckin = window.data.usersAds[cardIndex]['offer']['checkin'];
-    var adTimeCheckout = window.data.usersAds[cardIndex]['offer']['checkout'];
+    var adRooms = window.data.actualAdsList[cardIndex]['offer']['rooms'];
+    var adGuests = window.data.actualAdsList[cardIndex]['offer']['guests'];
+    var adTimeCheckin = window.data.actualAdsList[cardIndex]['offer']['checkin'];
+    var adTimeCheckout = window.data.actualAdsList[cardIndex]['offer']['checkout'];
     var cardTextsFields = ['.popup__title', '.popup__text--address', '.popup__text--price', '.popup__type',
       '.popup__text--capacity', '.popup__text--time', '.popup__description'];
     var adRoomsAndGuests;
@@ -81,7 +82,7 @@
       adTimes = 'Заезд после ' + adTimeCheckin + ' выезд до ' + adTimeCheckout;
     }
 
-    var cardTextsValues = [window.data.usersAds[cardIndex]['offer']['title'], window.data.usersAds[cardIndex]['offer']['address'], window.data.usersAds[cardIndex]['offer']['price'] + '₽/ночь', window.data.usersAds[cardIndex]['offer']['type'], adRoomsAndGuests, adTimes, window.data.usersAds[cardIndex]['offer']['description']];
+    var cardTextsValues = [window.data.actualAdsList[cardIndex]['offer']['title'], window.data.actualAdsList[cardIndex]['offer']['address'], window.data.actualAdsList[cardIndex]['offer']['price'] + '₽/ночь', window.data.actualAdsList[cardIndex]['offer']['type'], adRoomsAndGuests, adTimes, window.data.actualAdsList[cardIndex]['offer']['description']];
 
     for (var i = 0; i < cardTextsFields.length; i++) {
       renderTextCard(cardTextsFields[i], cardTextsValues[i], adInfoCardElement);
@@ -121,9 +122,9 @@
     var featuresListInTemplateElement = featuresContianerInTemplateElement.querySelectorAll('.popup__feature');
     var photosContainerElement = elementContainer.querySelector('.popup__photos');
     var photoImgTeplateElement = photosContainerElement.querySelector('.popup__photo');
-    var adAvatar = window.data.usersAds[cardIndex]['author']['avatar'];
-    var featuresList = window.data.usersAds[cardIndex]['offer']['features'];
-    var photosList = window.data.usersAds[cardIndex]['offer']['photos'];
+    var adAvatar = window.data.actualAdsList[cardIndex]['author']['avatar'];
+    var featuresList = window.data.actualAdsList[cardIndex]['offer']['features'];
+    var photosList = window.data.actualAdsList[cardIndex]['offer']['photos'];
 
     if (adAvatar === '' || adAvatar === undefined) {
       elementContainer.querySelector('.popup__avatar').classList.add('visually-hidden');
@@ -197,8 +198,17 @@
     return photoForCard;
   }
 
+  function removedAdsInfoCards() {
+    var adsCardSElements = mapElement.querySelectorAll('.map__card');
+
+    adsCardSElements.forEach(function (adCard) {
+      adCard.remove();
+    });
+  }
+
   window.card = {
-    createButtonsCards: createButtonsCards
+    createButtonsCards: createButtonsCards,
+    removedAdsInfoCards: removedAdsInfoCards
   };
 
 })();

@@ -4,19 +4,19 @@
 
   var mainMapPinElement = document.querySelector('.map__pin--main');
 
-  var MAIN_PIN = {
+  var MainPin = {
     WIDTH: 65,
     HEIGHT: 65,
     TAIL_HEIGHT: 15
   };
   var MAP_WIDTH = 1200;
-  var MAX_PIN_X = MAP_WIDTH - (MAIN_PIN.WIDTH / 2);
+  var MAX_PIN_X = MAP_WIDTH - (MainPin.WIDTH / 2);
   var MIN_X = 0;
-  var MIN_PIN_X = MIN_X - (MAIN_PIN.WIDTH / 2);
+  var MIN_PIN_X = MIN_X - (MainPin.WIDTH / 2);
   var MAX_Y = 630;
-  var MAX_PIN_Y = MAX_Y - MAIN_PIN.HEIGHT - MAIN_PIN.TAIL_HEIGHT;
+  var MAX_PIN_Y = MAX_Y - MainPin.HEIGHT - MainPin.TAIL_HEIGHT;
   var MIN_Y = 130;
-  var MIN_PIN_Y = MIN_Y - MAIN_PIN.HEIGHT - MAIN_PIN.TAIL_HEIGHT;
+  var MIN_PIN_Y = MIN_Y - MainPin.HEIGHT - MainPin.TAIL_HEIGHT;
   var DECIMAL_NUMBER_SYSTEM = 10;
   var START_MAIN_PIN_Y = mainMapPinElement.style.top;
   var START_MAIN_PIN_X = mainMapPinElement.style.left;

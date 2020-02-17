@@ -23,7 +23,7 @@
     .querySelector('.error');
 
   var DECIMAL_NUMBER_SYSTEM = 10;
-  var MAIN_PIN = {
+  var MainPin = {
     WIDTH: 65,
     HEIGHT: 65,
     TAIL_HEIGHT: 15
@@ -51,10 +51,10 @@
     var HALF_Y_OFFSET = 2;
     var PIN_TAIL_NONE = 0;
     var rateYОffset = window.map.pageIsActive ? FULL_Y_OFFSET : HALF_Y_OFFSET;
-    var pinTeil = window.map.pageIsActive ? MAIN_PIN.TAIL_HEIGHT : PIN_TAIL_NONE;
+    var pinTeil = window.map.pageIsActive ? MainPin.TAIL_HEIGHT : PIN_TAIL_NONE;
 
-    var mainPinXLocation = Math.floor(mainPinLeftСoord - MAIN_PIN.WIDTH / 2);
-    var mainPinYLocation = Math.floor(mainPinTopСoord + (MAIN_PIN.HEIGHT + pinTeil) / rateYОffset);
+    var mainPinXLocation = Math.floor(mainPinLeftСoord - MainPin.WIDTH / 2);
+    var mainPinYLocation = Math.floor(mainPinTopСoord + (MainPin.HEIGHT + pinTeil) / rateYОffset);
 
     formAddressElement.value = mainPinXLocation + ', ' + mainPinYLocation;
   }
