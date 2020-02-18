@@ -40,6 +40,7 @@
     window.map.pageIsActive = false;
     window.pin.mainButtonStartCoord();
     window.form.disabledAdForm();
+    window.filters.dropSettings();
     toggleFades();
     window.data.removeMapPins();
     window.card.removedAdsInfoCards();
