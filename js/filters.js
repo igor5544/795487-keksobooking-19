@@ -48,13 +48,12 @@
 
   function getSelectAdHits(ad) {
     var hits = 0;
-    var price = corectPriceType(ad['offer']['price']);
 
     if (ad['offer']['type'] === housTypeFilterElements.value) {
       hits++;
     }
 
-    if (price === housPriceFilterElements.value) {
+    if (corectPriceType(ad['offer']['price']) === housPriceFilterElements.value) {
       hits++;
     }
 
@@ -74,13 +73,9 @@
 
     if (priceInValue < Price.LOW_TOP) {
       priceCategory = 'low';
-    }
-
-    if (priceInValue >= Price.LOW_TOP && priceInValue <= Price.HIGH_BOTTOM) {
+    } else if (priceInValue >= Price.LOW_TOP && priceInValue <= Price.HIGH_BOTTOM) {
       priceCategory = 'middle';
-    }
-
-    if (priceInValue >= Price.HIGH_BOTTOM) {
+    } else if (priceInValue >= Price.HIGH_BOTTOM) {
       priceCategory = 'high';
     }
 
