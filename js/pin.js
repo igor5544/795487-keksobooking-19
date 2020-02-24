@@ -23,39 +23,27 @@
   var mainPinY = parseInt(mainMapPinElement.style.top, DECIMAL_NUMBER_SYSTEM);
   var mainPinX = parseInt(mainMapPinElement.style.left, DECIMAL_NUMBER_SYSTEM);
 
+  function Coordinate(x, y) {
+    this.x = x;
+    this.y = y;
+  }
+
   mainMapPinElement.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
 
-    var startActive = true;
-
     if (window.map.pageIsActive === false) {
-      setTimeout(function () {
-        if (startActive) {
-          window.map.onMainPinMousedown(evt);
-        }
-      }, 100);
+      window.map.onMainPinMousedown(evt);
     }
 
-    var startCoords = {
-      x: evt.clientX,
-      y: evt.clientY
-    };
+    var startCoords = new Coordinate(evt.clientX, evt.clientY);
 
     function onMouseMove(moveEvt) {
       moveEvt.preventDefault();
       window.form.enterAddress();
 
-      startActive = false;
+      var shift = new Coordinate(startCoords.x - moveEvt.clientX, startCoords.y - moveEvt.clientY);
 
-      var shift = {
-        x: startCoords.x - moveEvt.clientX,
-        y: startCoords.y - moveEvt.clientY
-      };
-
-      startCoords = {
-        x: moveEvt.clientX,
-        y: moveEvt.clientY
-      };
+      startCoords = new Coordinate(moveEvt.clientX, moveEvt.clientY);
 
       changeMainPinCoord(shift);
     }

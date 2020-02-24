@@ -19,12 +19,18 @@
         var actualCardInDomElement = document.querySelector('#card-' + (i + 1));
         var activeCardElement = mapElement.querySelector('.active-card');
 
-        if (activeCardElement !== null) {
+        if (activeCardElement !== null && activeCardElement === actualCardInDomElement) {
           return;
         }
 
-        if (actualCardInDomElement === null) {
+        if (actualCardInDomElement === null && activeCardElement === null) {
           buildAdInfoCard(i);
+        } else if (actualCardInDomElement === null) {
+          closeCard();
+          buildAdInfoCard(i);
+        } else if (activeCardElement !== null) {
+          closeCard();
+          openCard(actualCardInDomElement);
         } else {
           openCard(actualCardInDomElement);
         }
