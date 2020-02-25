@@ -43,9 +43,12 @@
   }
 
   function successLoad(usersData) {
-    window.data.usersAdsAll = usersData;
+    var clearUserData = usersData.filter(function (userAd) {
+      return userAd['offer'] !== undefined && userAd['offer'] !== '';
+    });
+    window.data.usersAdsAll = clearUserData;
 
-    renderMapPinsList(usersData);
+    renderMapPinsList(clearUserData);
   }
 
   function errorLoad(errorMessage) {

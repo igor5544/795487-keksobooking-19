@@ -7,7 +7,7 @@
   var adFormElement = document.querySelector('.ad-form');
 
   var pageIsActive = false;
-  var TIMEOUT_LOAD_IN_MS = 500;
+  var TIMEOUT_LOAD_IN_MS = 1000;
 
   mainMapPinElement.addEventListener('keydown', onMainPinKeydown);
 

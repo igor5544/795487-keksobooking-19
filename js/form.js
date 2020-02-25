@@ -72,6 +72,9 @@
       case 'house': minAppartamentPrice = 5000;
         break;
       case 'palace': minAppartamentPrice = 10000;
+        break;
+      default: minAppartamentPrice = 0;
+        break;
     }
 
     formPriceElement.setAttribute('min', minAppartamentPrice);

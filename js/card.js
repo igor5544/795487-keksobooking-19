@@ -19,6 +19,8 @@
         var actualCardInDomElement = document.querySelector('#card-' + (i + 1));
         var activeCardElement = mapElement.querySelector('.active-card');
 
+        mapButton.classList.add('map__pin--active');
+
         if (activeCardElement !== null && activeCardElement === actualCardInDomElement) {
           return;
         }
@@ -51,8 +53,11 @@
 
   function closeCard() {
     var activeCardElement = mapElement.querySelector('.active-card');
+    var activeButtonElement = mapElement.querySelector('.map__pin--active');
+
     activeCardElement.classList.add('visually-hidden');
     activeCardElement.classList.remove('active-card');
+    activeButtonElement.classList.remove('map__pin--active');
 
     document.removeEventListener('keydown', onActiveCardEscPress);
   }

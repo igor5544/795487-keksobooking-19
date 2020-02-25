@@ -128,7 +128,7 @@
       imgContainer.remove();
     }
 
-    if (loadApartmentImgElement.hasAttribute('disabled') === true) {
+    if (loadApartmentImgElement.hasAttribute('disabled')) {
       loadApartmentImgElement.removeAttribute('disabled');
     }
   }

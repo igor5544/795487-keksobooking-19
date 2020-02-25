@@ -101,7 +101,7 @@
     var checkedFeaturesList = [];
 
     checkboxFiltersListElements.forEach(function (checkboxElement) {
-      if (checkboxElement.checked === true) {
+      if (checkboxElement.checked) {
         checkedFeaturesList.push(checkboxElement.value);
       }
     });
@@ -125,7 +125,7 @@
     var hitsValue = 0;
 
     checkboxFiltersListElements.forEach(function (checkboxElement) {
-      if (checkboxElement.checked === true) {
+      if (checkboxElement.checked) {
         hitsValue++;
       }
     });
