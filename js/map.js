@@ -39,6 +39,7 @@
   function deactivationPage() {
     window.map.pageIsActive = false;
     window.pin.mainButtonStartCoord();
+    window.imgLoad.drop();
     window.form.disabledAdForm();
     window.filters.dropSettings();
     toggleFades();

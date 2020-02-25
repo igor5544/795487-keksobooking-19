@@ -9,6 +9,7 @@
   var apartmentChooserElement = adFormElement.querySelector('.ad-form__input');
   var apartmentImgContainerElement = adFormElement.querySelector('.ad-form__photo');
   var apartmentPhotosContainerElement = adFormElement.querySelector('.ad-form__photo-container');
+  var defoultAvatarLink = 'img/muffin-grey.svg';
 
   var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
   var MAX_PHOTOS = 16;
@@ -17,6 +18,23 @@
     WIDTH: 70,
     HEIGHT: 70
   };
+
+  function dropUserImages() {
+    var allApartmentImgContainersElements = adFormElement.querySelectorAll('.ad-form__photo');
+    var firstApartmentImg = adFormElement.querySelector('.ad-form__photo img');
+
+    avatarImgElement.src = defoultAvatarLink;
+
+    for (var i = 1; i < allApartmentImgContainersElements.length; i++) {
+      allApartmentImgContainersElements[i].remove();
+    }
+
+    firstApartmentImg.remove();
+
+    if (loadApartmentImgElement.hasAttribute('disabled')) {
+      loadApartmentImgElement.removeAttribute('disabled');
+    }
+  }
 
   avatarChooserElement.addEventListener('change', function () {
     setAvatarImg();
@@ -132,5 +150,9 @@
       loadApartmentImgElement.removeAttribute('disabled');
     }
   }
+
+  window.imgLoad = {
+    drop: dropUserImages
+  };
 
 })();
