@@ -2,24 +2,26 @@
 
 (function () {
 
-  var mainMapPinElement = document.querySelector('.map__pin--main');
+  var DECIMAL_NUMBER_SYSTEM = 10;
+  var MAP_WIDTH = 1200;
+  var MIN_X = 0;
+  var MIN_Y = 130;
+  var MAX_Y = 630;
 
   var MainPin = {
     WIDTH: 65,
     HEIGHT: 65,
     TAIL_HEIGHT: 15
   };
-  var MAP_WIDTH = 1200;
-  var MAX_PIN_X = MAP_WIDTH - (MainPin.WIDTH / 2);
-  var MIN_X = 0;
-  var MIN_PIN_X = MIN_X - (MainPin.WIDTH / 2);
-  var MAX_Y = 630;
-  var MAX_PIN_Y = MAX_Y - MainPin.HEIGHT - MainPin.TAIL_HEIGHT;
-  var MIN_Y = 130;
-  var MIN_PIN_Y = MIN_Y - MainPin.HEIGHT - MainPin.TAIL_HEIGHT;
-  var DECIMAL_NUMBER_SYSTEM = 10;
-  var START_MAIN_PIN_Y = mainMapPinElement.style.top;
-  var START_MAIN_PIN_X = mainMapPinElement.style.left;
+  var maxPinX = MAP_WIDTH - (MainPin.WIDTH / 2);
+  var minPinX = MIN_X - (MainPin.WIDTH / 2);
+  var maxPinY = MAX_Y - MainPin.HEIGHT - MainPin.TAIL_HEIGHT;
+  var minPinY = MIN_Y - MainPin.HEIGHT - MainPin.TAIL_HEIGHT;
+
+  var mainMapPinElement = document.querySelector('.map__pin--main');
+  var startMainPinY = mainMapPinElement.style.top;
+  var startMainPinX = mainMapPinElement.style.left;
+
   var mainPinY = parseInt(mainMapPinElement.style.top, DECIMAL_NUMBER_SYSTEM);
   var mainPinX = parseInt(mainMapPinElement.style.left, DECIMAL_NUMBER_SYSTEM);
 
@@ -63,33 +65,33 @@
     mainMapPinElement.style.top = (mainMapPinElement.offsetTop - coordOffset.y) + 'px ';
     mainPinY = parseInt(mainMapPinElement.style.top, DECIMAL_NUMBER_SYSTEM);
 
-    if (mainPinY >= MAX_PIN_Y) {
-      mainMapPinElement.style.top = MAX_PIN_Y + 'px ';
+    if (mainPinY >= maxPinY) {
+      mainMapPinElement.style.top = maxPinY + 'px ';
     }
 
-    if (mainPinY <= MIN_PIN_Y) {
-      mainMapPinElement.style.top = MIN_PIN_Y + 'px ';
+    if (mainPinY <= minPinY) {
+      mainMapPinElement.style.top = minPinY + 'px ';
     }
 
     mainMapPinElement.style.left = (mainMapPinElement.offsetLeft - coordOffset.x) + 'px ';
     mainPinX = parseInt(mainMapPinElement.style.left, DECIMAL_NUMBER_SYSTEM);
 
-    if (mainPinX >= MAX_PIN_X) {
-      mainMapPinElement.style.left = MAX_PIN_X + 'px ';
+    if (mainPinX >= maxPinX) {
+      mainMapPinElement.style.left = maxPinX + 'px ';
     }
 
-    if (mainPinX <= MIN_PIN_X) {
-      mainMapPinElement.style.left = MIN_PIN_X + 'px ';
+    if (mainPinX <= minPinX) {
+      mainMapPinElement.style.left = minPinX + 'px ';
     }
   }
 
-  function mainButtonStartCoord() {
-    mainMapPinElement.style.top = START_MAIN_PIN_Y;
-    mainMapPinElement.style.left = START_MAIN_PIN_X;
+  function setMainButtonStartCoord() {
+    mainMapPinElement.style.top = startMainPinY;
+    mainMapPinElement.style.left = startMainPinX;
   }
 
   window.pin = {
-    mainButtonStartCoord: mainButtonStartCoord
+    setMainButtonStartCoord: setMainButtonStartCoord
   };
 
 })();

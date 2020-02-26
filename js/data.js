@@ -2,14 +2,16 @@
 
 (function () {
 
+  var PIN_HEIGHT = 70;
+  var MAX_ADS = 5;
+
   var mapPinsContainerElement = document.querySelector('.map__pins');
   var mapPinTemplateElement = document.querySelector('#pin')
     .content
     .querySelector('.map__pin');
-  var PIN_HEIGHT = 70;
-  var MAX_ADS = 5;
+
   var usersAdsAll = [];
-  var actualAdsList = [];
+  var actualAds = [];
 
   function getRandomNumber(minNumber, maxNumber) {
     return Math.floor(Math.random() * (maxNumber - minNumber + 1)) + minNumber;
@@ -27,16 +29,16 @@
     return mapPinElement;
   }
 
-  function renderMapPinsList(usersData) {
+  function renderMapPins(usersData) {
     var fragment = document.createDocumentFragment();
     var firstAds = usersData.length > MAX_ADS ? getRandomNumber(0, usersData.length - MAX_ADS) : 0;
     var lastAds = usersData.length > MAX_ADS ? firstAds + MAX_ADS : usersData.length;
 
-    window.data.actualAdsList = usersData.slice(firstAds, lastAds);
+    window.data.actualAds = usersData.slice(firstAds, lastAds);
     window.data.removeMapPins();
 
-    for (var i = 0; i < window.data.actualAdsList.length; i++) {
-      fragment.appendChild(renderMapPin(window.data.actualAdsList[i]));
+    for (var i = 0; i < window.data.actualAds.length; i++) {
+      fragment.appendChild(renderMapPin(window.data.actualAds[i]));
     }
 
     mapPinsContainerElement.appendChild(fragment);
@@ -48,7 +50,7 @@
     });
     window.data.usersAdsAll = clearUserData;
 
-    renderMapPinsList(clearUserData);
+    renderMapPins(clearUserData);
   }
 
   function errorLoad(errorMessage) {
@@ -64,7 +66,7 @@
     document.body.insertAdjacentElement('beforebegin', nodeElemetn);
   }
 
-  function activeMapPins() {
+  function activateMapPins() {
     window.backend.load(successLoad, errorLoad);
   }
 
@@ -79,10 +81,10 @@
   }
 
   window.data = {
-    activeMapPins: activeMapPins,
+    activateMapPins: activateMapPins,
     removeMapPins: removeMapPins,
-    actualAdsList: actualAdsList,
-    renderMapPinsList: renderMapPinsList,
+    actualAds: actualAds,
+    renderMapPins: renderMapPins,
     usersAdsAll: usersAdsAll
   };
 

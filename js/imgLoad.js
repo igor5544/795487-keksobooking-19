@@ -2,6 +2,10 @@
 
 (function () {
 
+  var FILE_AVATAR_TYPES = ['jpg', 'jpeg', 'png'];
+  var FILE_APARTMENT_TYPES = ['jpg', 'jpeg'];
+  var MAX_PHOTO = 16;
+
   var adFormElement = document.querySelector('.ad-form');
   var loadApartmentImgElement = adFormElement.querySelector('[name="images"]');
   var avatarChooserElement = adFormElement.querySelector('.ad-form-header__input');
@@ -10,9 +14,6 @@
   var apartmentImgContainerElement = adFormElement.querySelector('.ad-form__photo');
   var apartmentPhotosContainerElement = adFormElement.querySelector('.ad-form__photo-container');
   var defoultAvatarLink = 'img/muffin-grey.svg';
-
-  var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
-  var MAX_PHOTOS = 16;
 
   var ApartmentImg = {
     WIDTH: 70,
@@ -23,13 +24,21 @@
     var allApartmentImgContainersElements = adFormElement.querySelectorAll('.ad-form__photo');
     var firstApartmentImg = adFormElement.querySelector('.ad-form__photo img');
 
-    avatarImgElement.src = defoultAvatarLink;
-
-    for (var i = 1; i < allApartmentImgContainersElements.length; i++) {
-      allApartmentImgContainersElements[i].remove();
+    if (avatarImgElement.src !== defoultAvatarLink) {
+      avatarImgElement.src = defoultAvatarLink;
     }
 
-    firstApartmentImg.remove();
+    if (allApartmentImgContainersElements.length > 1) {
+      allApartmentImgContainersElements.forEach(function (formItem, i) {
+        if (i !== 0) {
+          formItem.remove();
+        }
+      });
+    }
+
+    if (firstApartmentImg) {
+      firstApartmentImg.remove();
+    }
 
     if (loadApartmentImgElement.hasAttribute('disabled')) {
       loadApartmentImgElement.removeAttribute('disabled');
@@ -47,15 +56,15 @@
   function setAvatarImg() {
     var file = avatarChooserElement.files[0];
 
-    if (checkFileType(file)) {
+    if (checkFileType(file, FILE_AVATAR_TYPES)) {
       renderImgFile(file, loadAvatarImg, avatarImgElement);
     }
   }
 
-  function checkFileType(file) {
+  function checkFileType(file, fileTypes) {
     var fileName = file.name.toLowerCase();
 
-    var matches = FILE_TYPES.some(function (extension) {
+    var matches = fileTypes.some(function (extension) {
       return fileName.endsWith(extension);
     });
 
@@ -68,18 +77,26 @@
 
   function setApartmentImgs() {
     var allApartmentImagesElements = adFormElement.querySelectorAll('.ad-form__photo img');
-    var maxAddImages = MAX_PHOTOS - allApartmentImagesElements.length;
-    var imagesValue = apartmentChooserElement.files.length < maxAddImages ? apartmentChooserElement.files.length : maxAddImages;
+    var maxAddImage = MAX_PHOTO - allApartmentImagesElements.length;
+    var imageValue = apartmentChooserElement.files.length < maxAddImage ? apartmentChooserElement.files.length : maxAddImage;
+    var failTypeImg = 0;
 
-    for (var i = 0; i < imagesValue; i++) {
+    for (var i = 0; i < imageValue; i++) {
       var file = apartmentChooserElement.files[i];
 
-      if (checkFileType(file)) {
+      if (checkFileType(file, FILE_APARTMENT_TYPES)) {
         renderImgFile(file, loadApartmentImg);
+      } else if (imageValue !== apartmentChooserElement.files.length) {
+        imageValue++;
+        failTypeImg++;
+      } else {
+        failTypeImg++;
       }
     }
 
-    if (maxAddImages === imagesValue) {
+    imageValue -= failTypeImg;
+
+    if (maxAddImage === imageValue) {
       loadApartmentImgElement.setAttribute('disabled', 'disabled');
     }
   }
@@ -99,7 +116,7 @@
     var apartmentImgElement = imgContainerElement.querySelector('img');
     var allApartmentImagesElements = adFormElement.querySelectorAll('.ad-form__photo img');
 
-    if (apartmentImgElement !== null && allApartmentImagesElements.length !== MAX_PHOTOS) {
+    if (apartmentImgElement !== null && allApartmentImagesElements.length !== MAX_PHOTO) {
       buildNewImage(render.result);
     } else {
       var imgElement = document.createElement('img');

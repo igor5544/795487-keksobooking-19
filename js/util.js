@@ -8,28 +8,28 @@
     ENTER: 13
   };
 
-  function isLeftMouseEvent(evt, action) {
+  function trackLeftMouseEvent(evt, action) {
     if (evt.button === LEFT_MOUSE_BUTTON) {
       action();
     }
   }
 
-  function isEscEvent(evt, action) {
+  function trackEscEvent(evt, action) {
     if (evt.keyCode === Key.ESC) {
       action();
     }
   }
 
-  function isEnterEvent(evt, action) {
+  function trackEnterEvent(evt, action) {
     if (evt.keyCode === Key.ENTER) {
       action();
     }
   }
 
   window.util = {
-    isLeftMouseEvent: isLeftMouseEvent,
-    isEscEvent: isEscEvent,
-    isEnterEvent: isEnterEvent
+    trackLeftMouseEvent: trackLeftMouseEvent,
+    trackEscEvent: trackEscEvent,
+    trackEnterEvent: trackEnterEvent
   };
 
 })();

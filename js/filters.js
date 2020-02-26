@@ -2,14 +2,16 @@
 
 (function () {
 
-  var mapFiltersElement = document.querySelector('.map__filters-container');
-  var selectFiltersListElements = mapFiltersElement.querySelectorAll('.map__filter');
-  var checkboxFiltersListElements = mapFiltersElement.querySelectorAll('.map__checkbox');
-  var housTypeFilterElements = mapFiltersElement.querySelector('#housing-type');
-  var housPriceFilterElements = mapFiltersElement.querySelector('#housing-price');
-  var housRoomsFilterElements = mapFiltersElement.querySelector('#housing-rooms');
-  var housGuestsFilterElements = mapFiltersElement.querySelector('#housing-guests');
   var TIMEOUT_LOAD_IN_MS = 500;
+
+  var mapFiltersElement = document.querySelector('.map__filters');
+  var selectFiltersListElements = mapFiltersElement.querySelectorAll('.map__filter');
+  var housTypeFilterElement = mapFiltersElement.querySelector('#housing-type');
+  var housPriceFilterElement = mapFiltersElement.querySelector('#housing-price');
+  var housRoomsFilterElement = mapFiltersElement.querySelector('#housing-rooms');
+  var housGuestsFilterElement = mapFiltersElement.querySelector('#housing-guests');
+  var featureFilterContainerElement = mapFiltersElement.querySelector('.map__features');
+  var checkboxFiltersListElements = featureFilterContainerElement.querySelectorAll('.map__checkbox');
   var selectHits = 0;
   var checkboxHits = 0;
 
@@ -17,6 +19,24 @@
     LOW_TOP: 10000,
     HIGH_BOTTOM: 50000
   };
+
+  deactivateFilterForm();
+
+  function deactivateFilterForm() {
+    selectFiltersListElements.forEach(function (selectElement) {
+      selectElement.setAttribute('disabled', 'disabled');
+    });
+
+    featureFilterContainerElement.setAttribute('disabled', 'disabled');
+  }
+
+  function activateFilterForm() {
+    selectFiltersListElements.forEach(function (selectElement) {
+      selectElement.removeAttribute('disabled');
+    });
+
+    featureFilterContainerElement.removeAttribute('disabled');
+  }
 
   selectFiltersListElements.forEach(function (filterElement) {
     filterElement.addEventListener('change', function () {
@@ -39,29 +59,29 @@
       return activeFilters(window.data.usersAdsAll);
     }
 
-    var newActualAdsList = window.data.usersAdsAll.filter(function (ad) {
+    var newActualAds = window.data.usersAdsAll.filter(function (ad) {
       return getSelectAdHits(ad) + getCheckboxAdHits(ad) === needHits;
     });
 
-    return activeFilters(newActualAdsList);
+    return activeFilters(newActualAds);
   });
 
   function getSelectAdHits(ad) {
     var hits = 0;
 
-    if (ad['offer']['type'] === housTypeFilterElements.value) {
+    if (ad['offer']['type'] === housTypeFilterElement.value) {
       hits++;
     }
 
-    if (corectPriceType(ad['offer']['price']) === housPriceFilterElements.value) {
+    if (corectPriceType(ad['offer']['price']) === housPriceFilterElement.value) {
       hits++;
     }
 
-    if (ad['offer']['rooms'] === +housRoomsFilterElements.value) {
+    if (ad['offer']['rooms'] === +housRoomsFilterElement.value) {
       hits++;
     }
 
-    if (ad['offer']['guests'] === +housGuestsFilterElements.value) {
+    if (ad['offer']['guests'] === +housGuestsFilterElement.value) {
       hits++;
     }
 
@@ -82,10 +102,9 @@
     return priceCategory;
   }
 
-
   function getCheckboxAdHits(ad) {
     var hits = 0;
-    var checkedFeatures = getCheckedFeaturesList();
+    var checkedFeatures = getCheckedFeatures();
     var adFeatures = ad['offer']['features'];
 
     checkedFeatures.forEach(function (checkedItem) {
@@ -97,16 +116,16 @@
     return hits;
   }
 
-  function getCheckedFeaturesList() {
-    var checkedFeaturesList = [];
+  function getCheckedFeatures() {
+    var checkedFeatures = [];
 
     checkboxFiltersListElements.forEach(function (checkboxElement) {
       if (checkboxElement.checked) {
-        checkedFeaturesList.push(checkboxElement.value);
+        checkedFeatures.push(checkboxElement.value);
       }
     });
 
-    return checkedFeaturesList;
+    return checkedFeatures;
   }
 
   function getSelectHitsValue() {
@@ -133,9 +152,9 @@
     return hitsValue;
   }
 
-  function activeFilters(adsList) {
+  function activeFilters(ads) {
     window.card.removedAdsInfoCards();
-    window.data.renderMapPinsList(adsList);
+    window.data.renderMapPins(ads);
     setTimeout(function () {
       window.card.createButtonsCards();
     }, TIMEOUT_LOAD_IN_MS);
@@ -152,7 +171,9 @@
   }
 
   window.filters = {
-    dropSettings: dropFiltersSettings
+    dropSettings: dropFiltersSettings,
+    deactivate: deactivateFilterForm,
+    activate: activateFilterForm
   };
 
 })();

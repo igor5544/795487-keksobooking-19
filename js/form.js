@@ -2,6 +2,11 @@
 
 (function () {
 
+  var DECIMAL_NUMBER_SYSTEM = 10;
+  var FULL_Y_OFFSET = 1;
+  var HALF_Y_OFFSET = 2;
+  var PIN_TAIL_NONE = 0;
+
   var mainElement = document.querySelector('main');
   var mainMapPinElement = document.querySelector('.map__pin--main');
   var adFormElement = document.querySelector('.ad-form');
@@ -12,7 +17,7 @@
   var formApartmentTypeElement = adFormElement.querySelector('[name="type"]');
   var formTimeinElement = adFormElement.querySelector('[name="timein"]');
   var formTimeoutElement = adFormElement.querySelector('[name="timeout"]');
-  var formTRoomsElement = adFormElement.querySelector('[name="rooms"]');
+  var formRoomsElement = adFormElement.querySelector('[name="rooms"]');
   var formGuestsElement = adFormElement.querySelector('[name="capacity"]');
 
   var successMasageTemplateElement = document.querySelector('#success')
@@ -22,34 +27,30 @@
     .content
     .querySelector('.error');
 
-  var DECIMAL_NUMBER_SYSTEM = 10;
   var MainPin = {
     WIDTH: 65,
     HEIGHT: 65,
     TAIL_HEIGHT: 15
   };
 
-  disabledAdForm();
+  deactivateAdForm();
   enterAddress();
 
-  function disabledAdForm() {
+  function deactivateAdForm() {
     adFormFieldsetsElements.forEach(function (formItem) {
       formItem.setAttribute('disabled', 'disabled');
     });
   }
 
-  function unDisabledAdForm() {
-    for (var i = 0; i < adFormFieldsetsElements.length; i++) {
-      adFormFieldsetsElements[i].removeAttribute('disabled');
-    }
+  function activateAdForm() {
+    adFormFieldsetsElements.forEach(function (formItem) {
+      formItem.removeAttribute('disabled');
+    });
   }
 
   function enterAddress() {
     var mainPinLeftСoord = parseInt(mainMapPinElement.style.left, DECIMAL_NUMBER_SYSTEM);
     var mainPinTopСoord = parseInt(mainMapPinElement.style.top, DECIMAL_NUMBER_SYSTEM);
-    var FULL_Y_OFFSET = 1;
-    var HALF_Y_OFFSET = 2;
-    var PIN_TAIL_NONE = 0;
     var rateYОffset = window.map.pageIsActive ? FULL_Y_OFFSET : HALF_Y_OFFSET;
     var pinTeil = window.map.pageIsActive ? MainPin.TAIL_HEIGHT : PIN_TAIL_NONE;
 
@@ -82,37 +83,45 @@
   }
 
   formTimeinElement.addEventListener('change', function () {
-    adjustmentTimeField(formTimeinElement, formTimeoutElement);
+    selectTimeField(formTimeinElement, formTimeoutElement);
   });
 
   formTimeoutElement.addEventListener('change', function () {
-    adjustmentTimeField(formTimeoutElement, formTimeinElement);
+    selectTimeField(formTimeoutElement, formTimeinElement);
   });
 
-  function adjustmentTimeField(timeField, dependTimeField) {
+  function selectTimeField(timeField, dependTimeField) {
     dependTimeField.value = timeField.value;
     dependTimeField.focus();
   }
 
   formGuestsElement.setCustomValidity('Данное количество комнат не рассчитано на столько гостей');
 
-  formGuestsElement.addEventListener('change', onGuestsAndRoomsChange);
-  formTRoomsElement.addEventListener('change', onGuestsAndRoomsChange);
+  formGuestsElement.addEventListener('change', onGuestValueChange);
+  formRoomsElement.addEventListener('change', onRoomValueChange);
 
-  function onGuestsAndRoomsChange() {
+  function onGuestValueChange() {
+    checkMaxGuest();
+  }
+
+  function onRoomValueChange() {
+    checkMaxGuest();
+  }
+
+  function checkMaxGuest() {
     formGuestsElement.setCustomValidity('');
 
-    if (formTRoomsElement.value < formGuestsElement.value || formTRoomsElement.value === '100' || formGuestsElement.value === '0') {
+    if (formRoomsElement.value < formGuestsElement.value || formRoomsElement.value === '100' || formGuestsElement.value === '0') {
       formGuestsElement.setCustomValidity('Данное количество комнат не рассчитано на столько гостей');
     }
 
-    if (formTRoomsElement.value === '100' && formGuestsElement.value === '0') {
+    if (formRoomsElement.value === '100' && formGuestsElement.value === '0') {
       formGuestsElement.setCustomValidity('');
     }
   }
 
   adFormElement.addEventListener('reset', function () {
-    window.map.deactivationPage();
+    window.map.deactivatePage();
     setTimeout(function () {
       enterAddress();
     }, 50);
@@ -154,11 +163,11 @@
   }
 
   function onSuccessPopupEscdown(evt) {
-    window.util.isEscEvent(evt, closeSuccessPopup);
+    window.util.trackEscEvent(evt, closeSuccessPopup);
   }
 
   function onSuccessPopupMousedown(evt) {
-    window.util.isLeftMouseEvent(evt, closeSuccessPopup);
+    window.util.trackLeftMouseEvent(evt, closeSuccessPopup);
   }
 
   function closeSuccessPopup() {
@@ -207,11 +216,11 @@
   }
 
   function onErrorPopupEscdown(evt) {
-    window.util.isEscEvent(evt, closeErrorPopup);
+    window.util.trackEscEvent(evt, closeErrorPopup);
   }
 
   function onErrorPopupMousedown(evt) {
-    window.util.isLeftMouseEvent(evt, closeErrorPopup);
+    window.util.trackLeftMouseEvent(evt, closeErrorPopup);
   }
 
   function closeErrorPopup() {
@@ -223,8 +232,8 @@
   }
 
   window.form = {
-    unDisabledAdForm: unDisabledAdForm,
-    disabledAdForm: disabledAdForm,
+    activate: activateAdForm,
+    deactivate: deactivateAdForm,
     enterAddress: enterAddress
   };
 
