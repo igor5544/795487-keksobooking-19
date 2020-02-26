@@ -130,7 +130,7 @@
 
   function renderMediaCard(cardIndex, elementContainer) {
     var featuresContianerInTemplateElement = elementContainer.querySelector('.popup__features');
-    var featuresInTemplateElement = featuresContianerInTemplateElement.querySelectorAll('.popup__feature');
+    var featuresInTemplateElements = featuresContianerInTemplateElement.querySelectorAll('.popup__feature');
     var photosContainerElement = elementContainer.querySelector('.popup__photos');
     var photoImgTeplateElement = photosContainerElement.querySelector('.popup__photo');
     var adAvatar = window.data.actualAds[cardIndex]['author']['avatar'];
@@ -143,11 +143,11 @@
       elementContainer.querySelector('.popup__avatar').setAttribute('src', adAvatar);
     }
 
-    if (featuresInTemplateElement.length !== features.length) {
+    if (featuresInTemplateElements.length !== features.length) {
       if (features.length === 0) {
         featuresContianerInTemplateElement.classList.add('visually-hidden');
       } else {
-        hideExcessFeatures(featuresInTemplateElement, features);
+        hideExcessFeatures(featuresInTemplateElements, features);
       }
     }
 
