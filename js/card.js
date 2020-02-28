@@ -185,11 +185,11 @@
     if (photos.length === 1) {
       imgTeplate.setAttribute('src', photos[0]);
     } else {
-      buildAdphotos(photos, imgTeplate, photosContainer);
+      buildOtherAdPhotos(photos, imgTeplate, photosContainer);
     }
   }
 
-  function buildAdphotos(photos, imgTeplate, photosContainer) {
+  function buildOtherAdPhotos(photos, imgTeplate, photosContainer) {
     var fragment = document.createDocumentFragment();
 
     imgTeplate.setAttribute('src', photos.shift());

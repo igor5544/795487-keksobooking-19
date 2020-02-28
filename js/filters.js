@@ -12,8 +12,8 @@
   var housGuestsFilterElement = mapFiltersElement.querySelector('#housing-guests');
   var featureFilterContainerElement = mapFiltersElement.querySelector('.map__features');
   var checkboxFiltersListElements = featureFilterContainerElement.querySelectorAll('.map__checkbox');
-  var selectHits = 0;
-  var checkboxHits = 0;
+  var selectHit = 0;
+  var checkboxHit = 0;
 
   var Price = {
     LOW_TOP: 10000,
@@ -51,41 +51,41 @@
   });
 
   var useAdsFilter = window.debounce(function () {
-    selectHits = getSelectHitsValue();
-    checkboxHits = getCheckboxHitsValue();
-    var needHits = selectHits + checkboxHits;
+    selectHit = getSelectHitValue();
+    checkboxHit = getCheckboxHitValue();
+    var needHit = selectHit + checkboxHit;
 
-    if (needHits === 0) {
+    if (needHit === 0) {
       return activeFilters(window.data.usersAdsAll);
     }
 
     var newActualAds = window.data.usersAdsAll.filter(function (ad) {
-      return getSelectAdHits(ad) + getCheckboxAdHits(ad) === needHits;
+      return getSelectAdHit(ad) + getCheckboxAdHit(ad) === needHit;
     });
 
     return activeFilters(newActualAds);
   });
 
-  function getSelectAdHits(ad) {
-    var hits = 0;
+  function getSelectAdHit(ad) {
+    var hit = 0;
 
     if (ad['offer']['type'] === housTypeFilterElement.value) {
-      hits++;
+      hit++;
     }
 
     if (corectPriceType(ad['offer']['price']) === housPriceFilterElement.value) {
-      hits++;
+      hit++;
     }
 
     if (ad['offer']['rooms'] === +housRoomsFilterElement.value) {
-      hits++;
+      hit++;
     }
 
     if (ad['offer']['guests'] === +housGuestsFilterElement.value) {
-      hits++;
+      hit++;
     }
 
-    return hits;
+    return hit;
   }
 
   function corectPriceType(priceInValue) {
@@ -102,18 +102,18 @@
     return priceCategory;
   }
 
-  function getCheckboxAdHits(ad) {
-    var hits = 0;
+  function getCheckboxAdHit(ad) {
+    var hit = 0;
     var checkedFeatures = getCheckedFeatures();
     var adFeatures = ad['offer']['features'];
 
     checkedFeatures.forEach(function (checkedItem) {
       if (adFeatures.indexOf(checkedItem) !== -1) {
-        hits++;
+        hit++;
       }
     });
 
-    return hits;
+    return hit;
   }
 
   function getCheckedFeatures() {
@@ -128,28 +128,28 @@
     return checkedFeatures;
   }
 
-  function getSelectHitsValue() {
-    var hitsValue = 0;
+  function getSelectHitValue() {
+    var hitValue = 0;
 
     selectFiltersListElements.forEach(function (filterElement) {
       if (filterElement.value !== 'any') {
-        hitsValue++;
+        hitValue++;
       }
     });
 
-    return hitsValue;
+    return hitValue;
   }
 
-  function getCheckboxHitsValue() {
-    var hitsValue = 0;
+  function getCheckboxHitValue() {
+    var hitValue = 0;
 
     checkboxFiltersListElements.forEach(function (checkboxElement) {
       if (checkboxElement.checked) {
-        hitsValue++;
+        hitValue++;
       }
     });
 
-    return hitsValue;
+    return hitValue;
   }
 
   function activeFilters(ads) {
